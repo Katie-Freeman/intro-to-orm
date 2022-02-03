@@ -1,0 +1,38 @@
+<html>
+    <head>
+     <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    </head>
+    <body>
+    {{>menu}}
+        <h1>Movies by Genre</h1>
+
+        <label for="cars">Choose a Genre:</label>
+       
+                <a href ="/movies/genre/action">Action</a>
+                <a href ="/movies/genre/comedy">Comedy</a>
+                <a href ="/movies/genre/drama">Drama</a>
+                <a href ="/movies/genre/fantasy">Fantasy</a>
+                <a href ="/movies/genre/horror">Horror</a>
+                <a href ="/movies/genre/mystery">Mystery</a>
+                <a href ="/movies/genre/romance">Romance</a>
+                <a href ="/movies/genre/thriller">Thriller</a>
+
+    <div id=moviesContainer>    
+        <ul>
+        {{#allMovies}}
+            <li>
+              <a href ='/movies/{{id}}'>  <b>{{title}}</b> </a>
+              
+                <form method='POST' action= '/movies/delete-movie?id={{id}}' >
+                    <button id="delete">Delete</button>
+                </form>
+            </li>
+        {{/allMovies}}
+        </ul>
+    </div>
+        
+        {{^allMovies}}
+            <h2>There are no Movies.<h2>
+        {{/allMovies}}
+    </body>
+</html>

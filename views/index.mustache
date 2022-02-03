@@ -1,0 +1,19 @@
+<html>
+    <head>
+     <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    </head>
+    <body>
+    {{>menu}}
+        <h1>My Favorite Movies</h1>
+        <h5> Please login below to view your favorite movies: <h5>
+        <form method = "POST" action = '/login'>
+            <input id="username" type = "text" name = "username" placeholder = "username" />
+            <input id="password" type = "password" name = "password" placeholder = "password" />
+            <button id="login">Login</button>
+             </form>
+             
+            <a id="register" href = "/add-user">Create an account<a>
+           
+        {{errorMessage}}
+    </body>
+</html>
