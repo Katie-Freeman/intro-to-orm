@@ -6,10 +6,12 @@
     {{>menu}}
         <h1>Add a new movie</h1>
         <form id="createMovieForm" method= 'POST' action= "/movies/add-movie">
-            <input id="title" type="text" placeholder ="Movie Title" name="title" />
+            <input id="title" type="text" placeholder ="Movie Title" name="title" required/>
             <input id="description" type="text" placeholder ="Movie Description" name= "description" />
-            <label for="cars">Choose a Genre:</label>
+            <input id="rating" type="integer" placeholder ="Rating" name= "rating" />
+            <label for="genres"></label>
             <select name="genre" id="genre">
+                <option value="">Select Genre</option>
                 <option value="action">Action</option>
                 <option value="comedy">Comedy</option>
                 <option value="drama">Drama</option>
@@ -19,7 +21,7 @@
                 <option value="romance">Romance</option>
                 <option value="thriller">Thriller</option>
             </select>
-            <input id="image" type="text" placeholder ="Paste Image URL here" name= "image" />
+            <input id="director" type="text" placeholder ="Director's Name" name= "director" />
             <button id= "save">Save</button>
         </form>
     </body>

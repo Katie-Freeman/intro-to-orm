@@ -13,6 +13,7 @@ app.set('view engine', 'mustache')
 
 
 app.use(express.urlencoded())
+app.use('/css', express.static("css"))
  
 // app.use(session({
 //     secret: 'keyboard cat',
@@ -55,10 +56,10 @@ app.get('/movies/genre', (req, res) => {
     res.render('genres')
 })
 
-  app.post('/movies/add-movie', (req, res) => {
+  app.post('/movies/add-movie', async (req, res) => {
       const title = req.body.title
       const genre = req.body.genre
-      const rating = req.body.rating
+      const rating = parseInt(req.body.rating)
       const director = req.body.director
 
       const movie = models.Movie.build({
@@ -68,16 +69,20 @@ app.get('/movies/genre', (req, res) => {
           director: director
       })
 
-      movie.save().then(() => {
-          res.redirect('/movies')
+      movie.save().then((savedMovie) => {
+        if(savedMovie) {} 
+        res.redirect('/movies')
       }).catch(error => {
-        console.log(error)
+        res.render('/movies/add-movie')
       })
 
   })
 
-  app.get('/delete-movie/:movieId', (req, res) => {
-      const movieId = req.params.movieId
+
+  app.post('/movies/delete-movie', (req, res) => {
+      
+      const movieId = req.query.movieId
+      
       models.Movie.destroy({
           where: {
               id: movieId
@@ -106,13 +111,66 @@ app.get('/movies/genre', (req, res) => {
       }).catch(error => console.log(error))
   })
 
-  app.get('/movies/:movieId', (req, res) => {
+  app.get('/movies/movieId/:movieId', (req, res) => {
     const movieId = req.params.movieId
-    models.Movie.findByPk(movieId)
-    .then(movie => {
-        console.log(movie)
-        res.render('movie-details', {movie: movie})
+
+    models.Movie.findByPk(movieId, {
+        include: [
+            {
+                model: models.Review,
+                as: 'reviews'
+            }
+        ]
+    }).then(movie => {
+        res.render('movie-details', movie.dataValues)
     }).catch(error => console.log(error)) 
+})
+
+app.get('/reviews/:reviewId', (req, res) => {
+    const reviewId = req.params.reviewId
+
+    models.Review.findByPk(reviewId, {
+        include: [
+            {
+                model: models.Movie,
+                as: 'movie'
+            }
+        ]
+    })
+    .then(review => {
+        res.json(review)
+    })
+})
+
+app.post("/movies/delete-review", (req, res) => {
+    const reviewId = req.query.reviewId
+    console.log(reviewId)
+    models.Review.destroy({
+        where: {
+            id: reviewId
+        }
+    }).then(() => {
+        res.redirect('/movies')
+    }).catch(error => console.log(error))
+})
+
+
+app.post("/movies/add-review", (req, res) => {
+    const movieId = parseInt(req.body.movieId)
+    const title = req.body.reviewTitle
+    const body = req.body.reviewBody
+
+    const review = models.Review.build({
+        movie_id: movieId,
+        title: title,
+        body: body
+    })
+    console.log(review)
+    review.save().then(savedReview => {
+        res.redirect(`/movies/movieId/${movieId}`)
+    }).catch(error => {
+        console.log(error)
+    })
 })
 
 

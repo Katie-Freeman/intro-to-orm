@@ -10,9 +10,9 @@
         <ul>
         {{#allMovies}}
             <li>
-              <a href ='/movies/{{id}}'>  <b>{{title}}</b> </a>
+              <a href ='/movies/movieId/{{id}}'>  <b>{{title}}</b> </a>
               
-                <form method='POST' action= '/movies/delete-movie?id={{id}}' >
+                <form method='POST' action= '/movies/delete-movie?movieId={{id}}' >
                     <button id="delete">Delete</button>
                 </form>
             </li>

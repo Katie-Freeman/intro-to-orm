@@ -8,25 +8,38 @@
 
     <div id=movieContainer>    
         <ul>
-        {{#movie}}
+       
         <img class="movieImage" src="{{movie.image}}">
             <li>
-                <b>{{movie.title}}</b>
-                <i>{{movie.description}}</i>
-                <label>{{movie.genre}}</label>
-                <form method='POST' action= '/movies/delete-movie?id={{id}}' >
+                <b>{{title}}</b>
+                <i>{{description}}</i>
+                <label>{{genre}}</label>
+                <form method='POST' action= '/movies/delete-movie?movieId={{id}}' >
                     <button id="delete">Delete</button>
                 </form>
                 <a id="edit" href='/movies/update-movie?id={{id}}' >
                     Edit
                 </a>
             </li>
-        {{/movie}}
+
         </ul>
+        <form method = "POST" action = "/movies/add-review" >
+            <input type = "hidden" name = "movieId" value = {{id}} />
+            <input type = "text" name = "reviewTitle" />
+            <input type = "text" name = "reviewBody" />
+            <button>Add Review</button>
+        </form>
+
+        {{#reviews}}
+            <b>{{title}}</b>
+            <p>{{body}}</p>
+        
+        <form method='POST' action= '/movies/delete-review?reviewId={{id}}' >
+                    <button id="delete">Delete</button>
+                </form>
+
+        {{/reviews}}
     </div>
         
-        {{^movie}}
-            <h2>No movie found.<h2>
-        {{/movie}}
     </body>
 </html>
